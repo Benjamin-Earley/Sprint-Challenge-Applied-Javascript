@@ -21,29 +21,27 @@
 axios.get('https://lambda-times-backend.herokuapp.com/articles')
     .then(response => {
         console.log(response)
-        let cardComponent = response.data.articles.map(category => {
-            for(let i=0; i < data.articles.category.length; i++){
-                return cardCreator(category[i].headline, category[i].authorPhoto, category[i].authorName)
-            }
+        const cardArticles = Object.entries(response.data.articles)
+        cardArticles.map(articles => {
+           articles[1].map(item => {
+               cardsContainer.appendChild(cardCreator(item))
+           })
         })
-        
-        let cardsContainer = document.querySelector('.cards-container')
-        cardComponent.forEach(newCard => {
-            cardsContainer.appendChild(newCard)
-        })        
     })
     .catch(error => {
         console.log('Error:', error)
     })
 
-function cardCreator(headline, authorPhoto, authorName){
+let cardsContainer = document.querySelector('.cards-container')       
+
+function cardCreator(item){
         
     let card = document.createElement('div')
         card.classList.add('card')
     
         let articleHeadline = document.createElement('div')
             articleHeadline.classList.add('headline')
-            articleHeadline.textContent = headline
+            articleHeadline.textContent = item.headline
             card.appendChild(articleHeadline)
     
         let articleAuthor = document.createElement('div')
@@ -55,11 +53,11 @@ function cardCreator(headline, authorPhoto, authorName){
                 articleAuthor.appendChild(articleImgDiv)    
     
                 let articleImage = document.createElement('img')
-                    articleImage.setAttribute('src', authorPhoto)
+                    articleImage.src = item.authorPhoto
                     articleImgDiv.appendChild(articleImage)
             
             let articleAuthorName = document.createElement('span')
-                articleAuthorName.textContent = `By ${authorName}`
+                articleAuthorName.textContent = `By ${item.authorName}`
                 articleAuthor.appendChild(articleAuthorName)
 
     return card
