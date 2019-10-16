@@ -25,6 +25,7 @@ axios.get('https://lambda-times-backend.herokuapp.com/articles')
         cardArticles.map(articles => {
            articles[1].map(item => {
                cardsContainer.appendChild(cardCreator(item))
+               console.log(articles)
            })
         })
     })
